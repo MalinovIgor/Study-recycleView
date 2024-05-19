@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Study-recycleView</string>
+    <string name="rul">вращайте бобину</string>
+    <string name="something_went_wrong">something_went_wrong</string>
+    <string name="nothing_found">nothing_found</string>
+    <string name="search">search</string>
+</resources>
