@@ -21,9 +21,9 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
     private val imdbBaseUrl = "https://tv-api.com"
     private val retrofit2 = Retrofit.Builder()
-            .baseUrl(imdbBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        .baseUrl(imdbBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     private val imdbService = retrofit2.create(ImdbApi::class.java)
 
@@ -51,39 +51,44 @@ class MainActivity : AppCompatActivity() {
 
         locationsList.adapter = adapter
 
-        searchButton.setOnClickListener {if (queryInput.text.isNotEmpty())
-            search()
+        searchButton.setOnClickListener {
+            if (queryInput.text.isNotEmpty())
+                search()
         }
-
 
     }
 
-    private fun showMessage(message:String, additionalMessage:String){
-        if(message.isNotEmpty()){
+
+    private fun showMessage(message: String, additionalMessage: String) {
+        if (message.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE
             infos.clear()
             adapter.notifyDataSetChanged()
             placeholderMessage.text = message
-            if (additionalMessage.isNotEmpty()){
+            if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_SHORT).show()
             }
-        }
+        } else
+            placeholderMessage.visibility = View.GONE
     }
+
     private fun search() {
         imdbService.getLocations(queryInput.text.toString())
             .enqueue(object : Callback<ImdbResponse> {
                 override fun onResponse(
-                    call: Call<ImdbResponse>, response: Response<ImdbResponse>) {
+                    call: Call<ImdbResponse>, response: Response<ImdbResponse>
+                ) {
                     when (response.code()) {
                         200 -> {
                             if (response.body()?.results?.isNotEmpty() == true) {
                                 infos.clear()
                                 infos.addAll(response.body()?.results!!)
                                 adapter.notifyDataSetChanged()
-                            } else {
-                                showMessage(getString(R.string.nothing_found), "")
                             }
-
+                            if (infos.isEmpty()) {
+                                showMessage(getString(R.string.nothing_found), "")
+                            } else
+                                showMessage("", "")
                         }
 
                         else -> showMessage(
