@@ -3,20 +3,15 @@ package ru.startandroid.develop.study_recycleview
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class LocationsAdapter(val clickListener: LocationClickListener) : RecyclerView.Adapter<LocationViewHolder>() {
+class LocationsAdapter() : RecyclerView.Adapter<LocationViewHolder>(){
 
-    var locations = ArrayList<ForecastLocation>()
+    var infos = ArrayList<MovieInfo>()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder =
+        LocationViewHolder(parent)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder = LocationViewHolder(parent)
+    override fun getItemCount(): Int = infos.size
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
-        holder.bind(locations.get(position))
-        holder.itemView.setOnClickListener { clickListener.onLocationClick(locations.get(position)) }
-    }
-
-    override fun getItemCount(): Int = locations.size
-
-    fun interface LocationClickListener {
-        fun onLocationClick(location: ForecastLocation)
+        holder.bind(infos.get(position))
     }
 }
